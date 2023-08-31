@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+    >
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Listado Noticias</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous"
+            />
+        <link rel="stylesheet" href="/css/style.css" />
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navBar">
+            <div class="containerImg">
+                <a href="/" class="navbar-brand d-flex align-items-center">
+                     <img class="logo" src="/img/Egg.png" alt="Img logo egg">
+                </a>
+            </div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse elementosNav" id="navbarNavDropdown">
+                <ul class="navbar-nav ms-auto elementos">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Noticias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                            <li><a class="dropdown-item" th:href="@{/noticia/registrar}">Crear Noticia</a></li>
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><a class="dropdown-item" th:href="@{/noticia/lista}">Listar noticias</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+        <h2>Listado Noticias</h2>
+
+        <div class="container m-5">
+            <table class="table table-dark">
+
+                <thead>
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Cuerpo</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col" sec:authorize="hasRole('ADMIN')">Modificar</th>
+                        <th scope="col" sec:authorize="hasRole('ADMIN')">Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody th:each="noticia : ${noticias}">
+                    <tr>
+                        <th scope="row" th:text="${noticia.id}"></th>
+                        <td th:text="${noticia.titulo}"></td>
+                        <td th:text="${noticia.cuerpo}"></td>
+                        <td th:text="${noticia.fecha}"></td>
+                        <td>
+                            <a
+                                sec:authorize="hasRole('ADMIN')"
+                                th:href="@{/noticia/modificar/__${noticia.id}__}"
+                                ><i class="fas fa-feather-alt"></i> Modificar
+                            </a>
+                        </td>
+                        <td>
+                            <a
+                                sec:authorize="hasRole('ADMIN')"
+                                th:href="@{/noticia/eliminar/__${noticia.id}__}"
+                                ><i class="fas fa-feather-alt"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+            <section class="py-5 text-center container">
+                <div class="row py-lg-5">
+                    <div class="col-lg-6 col-md-8 mx-auto">
+                        <a th:href="@{/}" class="btn btn-primary my-2">Volver</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div
+            th:if="${exito}!=null"
+            class="card text-white bg-success mb-3 mt-3 mensajeExito"
+            >
+            <div class="card-body">
+                <h5 class="card-title">Exito ð</h5>
+                <p class="card-text" th:text="${exito}"></p>
+            </div>
+        </div>
+        <div
+            th:if="${error}!=null"
+            class="card text-white bg-danger mb-3 mensajeError"
+            >
+            <div class="card-body">
+                <h5 class="card-title">Error ð</h5>
+                <p class="card-text" th:text="${error}"></p>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
